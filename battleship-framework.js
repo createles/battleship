@@ -20,11 +20,13 @@ class Gameboard {
   constructor() {
     this.shipGrid = createGrid(); // grid for placing ships
     this.attackGrid = createGrid(); // grid for record keeping of moves
+    this.ships = [];
   }
 
   placeShip(length, startPos, orientation) {
     if (placeValidation(length, startPos, orientation)) { // validate placement
       const newShip = new Ship(length); // create ship object with length
+      this.ships.push(newShip);
       if (orientation === "vertical") { // populate vertically
         for (let i = 0; i < length; i++) {
           this.shipGrid[startPos.x + i][startPos.y] = newShip;
@@ -48,6 +50,16 @@ class Gameboard {
       return false
     }
   }
+
+  areAllShipsSunk() { // check if all ships on board are sunk
+    for (let ship of this.ships) {
+      if (ship.isSunken() === false) {
+        return false; // immediately exit check if at least one is still standing
+      }
+    }
+    return true;
+  }
+
 }
 
 function createGrid() {
