@@ -41,6 +41,8 @@ class Gameboard {
 
   receiveAttack(pos) { // records and updates attack result
     const target = this.shipGrid[pos.x][pos.y];
+    if (this.attackGrid !== null) return false; // position already attacked
+
     if (target !== null) { // if position is occupied
       target.hit(); // update ship health
       this.attackGrid[pos.x][pos.y] = "hit!"; // record hit on position
@@ -60,6 +62,38 @@ class Gameboard {
     return true;
   }
 
+}
+
+class Player {
+  constructor(identity) {
+    this.identity = identity;
+    this.board = new Gameboard();
+  }
+
+  attack(opponentBoard, pos) {
+    if (opponentBoard.receiveAttack(pos)) {
+      return true; // return true to signal success to DOM
+    } else {
+      return false; // return false to signal fail to DOM
+    }
+  }
+
+  compAttack(opponentBoard) {
+    const movesList = getAvailableMoves(opponentBoard);
+
+    if (movesList.length > 0) {
+      const randomIndex = Math.floor(Math.random() * movesList.length);
+      const chosenPos = movesList[randomIndex];
+
+      if (opponentBoard.receiveAttack(chosenPos)) {
+        return true; // return true to signal success
+      } else {
+        return false; // return false to signal fail
+      }
+    } else {
+      return false; // no moves to be made
+    }
+  }
 }
 
 function createGrid() {
@@ -112,6 +146,19 @@ function placeValidation(length, startPos, orientation) {
     }
   }
   return true;
+}
+
+function getAvailableMoves(opponentBoard) {
+  const availableMoves = [];
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      const tile = opponentBoard.attackGrid[i][j];
+      if (tile === null) {
+        availableMoves.push({i, j});
+      }
+    }
+  }
+  return availableMoves;
 }
 
 export { Gameboard };
