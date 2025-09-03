@@ -15,4 +15,19 @@ body {
   width: 60%;
   height: 60%;
   background-color: brown;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.row-container {
+  height: 10%;
+  display: flex;
+  gap: 5px;
+}
+
+.tile {
+  height: 100%;
+  width: 10%;
+  background-color: rgb(56, 73, 73);
 }
