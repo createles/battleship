@@ -36,6 +36,11 @@ class Gameboard {
           this.shipGrid[startPos.x][startPos.y + i] = newShip;
         }
       }
+
+      return true;
+      
+    } else {
+      return false;
     }
   }
 
@@ -65,8 +70,8 @@ class Gameboard {
 }
 
 class Player {
-  constructor(identity) {
-    this.identity = identity;
+  constructor(type) {
+    this.type = type;
     this.board = new Gameboard();
   }
 
@@ -161,4 +166,4 @@ function getAvailableMoves(opponentBoard) {
   return availableMoves;
 }
 
-export { Gameboard };
+export { Gameboard, Player };
