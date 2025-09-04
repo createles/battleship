@@ -6,10 +6,12 @@ class Ship {
   }
 
   hit() {
+    // increments hit property
     this.hits++;
   }
 
   isSunken() {
+    // updates sunken property if ship is sunk
     if (this.hits >= this.length) {
       this.sunken = true;
     }
@@ -18,12 +20,12 @@ class Ship {
 
 class Gameboard {
   constructor() {
-    this.shipGrid = createGrid(); // grid for placing ships
-    this.attackGrid = createGrid(); // grid for record keeping of moves
+    this.shipGrid = this.#createGrid(); // grid for placing ships
+    this.attackGrid = this.#createGrid(); // grid for record-keeping of moves
     this.ships = [];
   }
 
-  createGrid() {
+  #createGrid() {
     const grid = [];
     for (let i = 0; i < 10; i++) {
       grid[i] = [];
@@ -35,7 +37,8 @@ class Gameboard {
   }
 
   placeShip(length, startPos, orientation) {
-    if (placeValidation(length, startPos, orientation)) {
+    // places ships in .shipGrid array
+    if (this.#placeValidation(length, startPos, orientation)) {
       // validate placement
       const newShip = new Ship(length); // create ship object with length
       this.ships.push(newShip);
@@ -57,7 +60,7 @@ class Gameboard {
     }
   }
 
-  placeValidation(length, startPos, orientation) {
+  #placeValidation(length, startPos, orientation) {
     // fail-first approach (helpful for validation)
     const xPos = startPos.x;
     const yPos = startPos.y;
@@ -78,9 +81,10 @@ class Gameboard {
       return false;
 
     // if move exceeds board due to ship length, exit
-    if (orientation === "vertical" && xPos + length > 10) {
-      return false;
-    } else if (orientation === "horizontal" && yPos + length > 10) {
+    if (
+      (orientation === "vertical" && xPos + length > 10) ||
+      (orientation === "horizontal" && yPos + length > 10)
+    ) {
       return false;
     }
 
@@ -102,11 +106,12 @@ class Gameboard {
   receiveAttack(pos) {
     // records and updates attack result
     const target = this.shipGrid[pos.x][pos.y];
-    if (this.attackGrid[pos.x][pos.y] !== null) return false; // position already attacked
+    if (this.attackGrid[pos.x][pos.y] !== null) return false; // position already attacked (either a 'hit!' or 'miss!' element at index)
 
     if (target !== null) {
       // if position is occupied
       target.hit(); // update ship health
+      target.isSunken(); // check and update sunken status
       this.attackGrid[pos.x][pos.y] = "hit!"; // record hit on position
       return true;
     } else if (target === null) {
@@ -116,7 +121,7 @@ class Gameboard {
     }
   }
 
-  areAllShipsSunk() {
+  areAllShipsSunk() { // end condition check for when all ships are sunk
     // check if all ships on board are sunk
     for (let ship of this.ships) {
       if (ship.sunken === false) {
@@ -129,36 +134,29 @@ class Gameboard {
 
 class Player {
   constructor(type) {
-    this.type = type;
+    this.type = type; // types are: "human", "comp"
     this.board = new Gameboard();
   }
 
-  attack(opponentBoard, pos) {
-    if (opponentBoard.receiveAttack(pos)) {
-      return true; // return true to signal success to DOM
-    } else {
-      return false; // return false to signal fail to DOM
-    }
+  attack(opponentBoard, pos) { // calls an attack on specified coordinate, and returns true/false to signal success/fail
+    return opponentBoard.receiveAttack(pos)
   }
 
-  compAttack(opponentBoard) {
-    const movesList = getAvailableMoves(opponentBoard);
+  compAttack(opponentBoard) { // computer's (random) attack logic
+    const movesList = this.#getAvailableMoves(opponentBoard);
 
     if (movesList.length > 0) {
       const randomIndex = Math.floor(Math.random() * movesList.length);
       const chosenPos = movesList[randomIndex];
 
-      if (opponentBoard.receiveAttack(chosenPos)) {
-        return true; // return true to signal success
-      } else {
-        return false; // return false to signal fail
-      }
+      return (opponentBoard.receiveAttack(chosenPos));
+
     } else {
       return false; // no moves to be made
     }
   }
 
-  getAvailableMoves(opponentBoard) {
+  #getAvailableMoves(opponentBoard) {
     const availableMoves = [];
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
