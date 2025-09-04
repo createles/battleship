@@ -1,4 +1,4 @@
-import { Gameboard } from "./battleship-framework";
+import { Gameboard } from "./battleship-data";
 
 describe("test gameboard generation", () => {
   test("creates 2 gameboards with 10 tiles", () => {

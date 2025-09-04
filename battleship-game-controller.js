@@ -1,6 +1,9 @@
-import { Player, Gameboard } from "./battleship-framework";
+import { Player, Gameboard } from "./battleship-data";
 
-function Game() {}
+function setupGame(p1, p2) {
+  populateBoard(p1);
+  populateBoard(p2);
+}
 
 function populateBoard(player) {
   const shipList = [5, 4, 3, 2, 1];
@@ -40,3 +43,7 @@ function generateOrientation() {
   const orientation = Math.random() < 0.5 ? "vertical" : "horizontal"; // random orientation
   return orientation;
 }
+
+const trialP1 = new Player("computer");
+const trialP2 = new Player("computer");
+setupGame(trialP1, trialP2);

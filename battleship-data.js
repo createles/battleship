@@ -10,7 +10,7 @@ class Ship {
   }
 
   isSunken() {
-    if (this.hits === this.length) {
+    if (this.hits >= this.length) {
       this.sunken = true;
     }
   }
@@ -60,7 +60,7 @@ class Gameboard {
 
   areAllShipsSunk() { // check if all ships on board are sunk
     for (let ship of this.ships) {
-      if (ship.isSunken() === false) {
+      if (ship.sunken === false) {
         return false; // immediately exit check if at least one is still standing
       }
     }
