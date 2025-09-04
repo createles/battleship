@@ -134,7 +134,7 @@ class Gameboard {
 
 class Player {
   constructor(type) {
-    this.type = type; // types are: "human", "comp"
+    this.type = type; // types are: "human", "cpu"
     this.board = new Gameboard();
   }
 
