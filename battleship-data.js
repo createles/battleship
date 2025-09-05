@@ -162,7 +162,7 @@ class Player {
       for (let j = 0; j < 10; j++) {
         const tile = opponentBoard.attackGrid[i][j];
         if (tile === null) {
-          availableMoves.push({ i, j });
+          availableMoves.push({ x: i, y: j });
         }
       }
     }
