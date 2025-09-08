@@ -6,7 +6,7 @@ function setupGame(p1, p2) {
 }
 
 function populateBoard(player) {
-  const shipList = [5, 4, 3, 2];
+  const shipList = [5, 4, 3, 3, 2];
   if (player.type === "human") {
     // to be determined after DOM is set up
   } else {
