@@ -12,14 +12,6 @@ function createTiles(playerBoard) {
     }
     board.append(row);
   }
-
 }
 
-function drawPlayerBoard(playerBoard) {
-  
-}
-
-const playerBoard = document.querySelector("#playerBoard");
-const opponentBoard = document.querySelector("#opponentBoard")
-createTiles(playerBoard);
-createTiles(opponentBoard);
+export { createTiles }
