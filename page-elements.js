@@ -1,13 +1,15 @@
 function createTiles(playerBoard) {
   const board = playerBoard;
-  for (let i = 0; i < 10; i++) {
+  for (let x = 0; x < 10; x++) {
     const row = document.createElement("div");
-    row.id = `row-${i}`;
+    row.id = `row-${x}`;
     row.classList.add("row-container");
-    for (let j = 0; j < 10; j++) {
+    for (let y = 0; y < 10; y++) {
       const tile = document.createElement("div");
-      tile.id = `${i}-tile-${j}`;
+      tile.id = `${x}-tile-${y}`;
       tile.classList.add("tile");
+      tile.dataset.x = x;
+      tile.dataset.y = y;
       row.append(tile);
     }
     board.append(row);

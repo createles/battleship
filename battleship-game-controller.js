@@ -1,27 +1,48 @@
 import { Player, Gameboard } from "./battleship-data.js";
+import { generatePlacementScreen } from "./placement-screen.js";
 
-function setupGame(p1, p2) {
-  populateBoard(p1);
-  populateBoard(p2);
+function setupGame() {
+  const humanPlayer = new Player("human");
+  const cpuPlayer = new Player("cpu");
+
+  populateCpuBoard(cpuPlayer);
+
+  generatePlacementScreen(humanPlayer);
 }
 
-function populateBoard(player) {
-  const shipList = [5, 4, 3, 3, 2];
-  if (player.type === "human") {
-    // to be determined after DOM is set up
-  } else {
-    for (const shipLength of shipList) {
-      // Attempt placing ship piece until valid placement is found
-      let isPlaced;
-      do {
-        const position = generatePosition();
-        const orientation = generateOrientation();
+function handleHumanShipPlacement(player, length, x, y, orientation) {
+  const placementSuccessful = player.board.placeShip(length, { x, y }, orientation);
 
-        // returns true or false
-        isPlaced = player.board.placeShip(shipLength, position, orientation);
-      } while (!isPlaced);
-    }
+  return placementSuccessful;
+}
+
+function populateCpuBoard(cpu) {
+  const shipList = [5, 4, 3, 3, 2];
+  for (const shipLength of shipList) {
+    // Attempt placing ship piece until valid placement is found
+    let isPlaced;
+    do {
+      const position = generatePosition();
+      const orientation = generateOrientation();
+
+      // returns true or false
+      isPlaced = cpu.board.placeShip(shipLength, position, orientation);
+    } while (!isPlaced);
   }
+}
+
+// CPU POSITION LOGIC
+function generatePosition() { // generate random position for ship placement
+  const x = Math.floor(Math.random() * 10); // random x coordinate
+  const y = Math.floor(Math.random() * 10); // random y coordinate
+
+  return { x, y };
+}
+
+// CPU ORIENTATION LOGIC
+function generateOrientation() { // generate random orientation
+  const orientation = Math.random() < 0.5 ? "vertical" : "horizontal"; // random orientation
+  return orientation;
 }
 
 function takeTurn(player, opponent) {
@@ -60,19 +81,6 @@ function gameLoop(p1, p2) {
   return;
 }
 
-function generatePosition() { // generate random position for ship placement
-  const x = Math.floor(Math.random() * 10); // random x coordinate
-  const y = Math.floor(Math.random() * 10); // random y coordinate
+// gameLoop(trialP1, trialP2);
 
-  return { x, y };
-}
-
-function generateOrientation() { // generate random orientation
-  const orientation = Math.random() < 0.5 ? "vertical" : "horizontal"; // random orientation
-  return orientation;
-}
-
-const trialP1 = new Player("cpu");
-const trialP2 = new Player("cpu");
-setupGame(trialP1, trialP2);
-gameLoop(trialP1, trialP2);
+export { handleHumanShipPlacement, setupGame };

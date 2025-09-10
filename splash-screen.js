@@ -1,5 +1,6 @@
 import { generatePlacementScreen } from "./placement-screen.js";
 import { clearPage } from "./main.js";
+import { setupGame } from "./battleship-game-controller.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 
@@ -16,7 +17,7 @@ function generateSplash() {
   startGame.textContent = "Start Game";
   startGame.addEventListener("click", () => {
     clearPage();
-    generatePlacementScreen();
+    setupGame()
   });
 
   titleBox.append(titleCard, startGame);
