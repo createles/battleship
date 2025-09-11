@@ -45,12 +45,12 @@ class Gameboard {
       if (orientation === "vertical") {
         // populate vertically
         for (let i = 0; i < length; i++) {
-          this.shipGrid[startPos.x + i][startPos.y] = newShip;
+          this.shipGrid[startPos.y + i][startPos.x] = newShip;
         }
       } else if (orientation === "horizontal") {
         // populate horizontally
         for (let i = 0; i < length; i++) {
-          this.shipGrid[startPos.x][startPos.y + i] = newShip;
+          this.shipGrid[startPos.y][startPos.x + i] = newShip;
         }
       }
 
@@ -73,7 +73,7 @@ class Gameboard {
       xPos > 9 ||
       yPos < 0 ||
       yPos > 9 ||
-      this.shipGrid[xPos][yPos] !== null
+      this.shipGrid[yPos][xPos] !== null
     )
       return false;
 
@@ -82,8 +82,8 @@ class Gameboard {
 
     // if move exceeds board due to ship length, exit
     if (
-      (orientation === "vertical" && xPos + length > 10) ||
-      (orientation === "horizontal" && yPos + length > 10)
+      (orientation === "vertical" && yPos + length > 10) ||
+      (orientation === "horizontal" && xPos + length > 10)
     ) {
       return false;
     }
@@ -91,11 +91,11 @@ class Gameboard {
     // check if consecutive spaces are available for placement
     for (let i = 0; i < length; i++) {
       if (orientation === "vertical") {
-        if (this.shipGrid[xPos + i][yPos] !== null) {
+        if (this.shipGrid[yPos + i][xPos] !== null) {
           return false;
         }
       } else if (orientation === "horizontal") {
-        if (this.shipGrid[xPos][yPos + i] !== null) {
+        if (this.shipGrid[yPos][xPos + i] !== null) {
           return false;
         }
       }
