@@ -16,4 +16,20 @@ function createTiles(playerBoard) {
   }
 }
 
-export { createTiles }
+function fillPieces(x, y, length, orientation) {
+  const board = document.querySelector(".board");
+
+  if (orientation === "horizontal") {
+    for (let i = 0; i < length; i++) {
+      const tile = board.querySelector(`#tile-${y}-${x+i}`);
+      tile.classList.add("filled-tile");
+    }
+  } else {
+    for (let i = 0; i < length; i++) {
+      const tile = board.querySelector(`#tile-${y+i}-${x}`);
+      tile.classList.add("filled-tile");
+    }
+  }
+}
+
+export { createTiles, fillPieces }
