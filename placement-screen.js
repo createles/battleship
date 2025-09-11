@@ -1,5 +1,7 @@
-import { createTiles } from "./page-elements.js";
+import { createTiles, fillPieces } from "./page-elements.js";
 import { handleHumanShipPlacement } from "./battleship-game-controller.js";
+import { generateBattleScreen } from "./battle-screen.js";
+import { clearPage } from "./main.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 
@@ -19,8 +21,16 @@ function generatePlacementScreen(player) {
   const shipMenu = document.createElement("div");
   shipMenu.id = "shipMenu";
 
+  const confirmBtn = document.createElement("button");
+  confirmBtn.id = "confirm-btn";
+  confirmBtn.textContent = "confirm";
+  confirmBtn.addEventListener("click", () => {
+    clearPage();
+    generateBattleScreen();
+  });
+
   placementContainer.append(board, shipMenu);
-  mainContainer.append(instructions, placementContainer);
+  mainContainer.append(instructions, placementContainer, confirmBtn);
 
   createPieces(); // generate pieces for ship menu
   makeDraggable(player); // allow pieces to be draggable
@@ -151,22 +161,6 @@ function makeDraggable(player) {
     draggable.addEventListener("click", handleRotation);
     draggable.addEventListener("mousedown", onMouseDown);
   });
-}
-
-function fillPieces(x, y, length, orientation) {
-  const board = document.querySelector(".board");
-
-  if (orientation === "horizontal") {
-    for (let i = 0; i < length; i++) {
-      const tile = board.querySelector(`#tile-${y}-${x+i}`);
-      tile.classList.add("filled-tile");
-    }
-  } else {
-    for (let i = 0; i < length; i++) {
-      const tile = board.querySelector(`#tile-${y+i}-${x}`);
-      tile.classList.add("filled-tile");
-    }
-  }
 }
 
 export { generatePlacementScreen };
