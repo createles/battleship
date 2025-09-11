@@ -115,9 +115,7 @@ function makeDraggable(player) {
             console.log(`Placement successful.`);
             console.log(player.board);
             elementBelow.append(draggable);
-            // draggable.style.position = "absolute"; ** RE-FACTOR---must place the visual pieces
-            // draggable.style.left = "0px";
-            // draggable.style.top = "0px";
+            fillPieces(x, y, length, orientation);
             draggable.removeEventListener("mousedown", onMouseDown);
             draggable.removeEventListener("click", handleRotation);
           } else { // on fail (tile already occupied), return piece to menu
@@ -153,6 +151,22 @@ function makeDraggable(player) {
     draggable.addEventListener("click", handleRotation);
     draggable.addEventListener("mousedown", onMouseDown);
   });
+}
+
+function fillPieces(x, y, length, orientation) {
+  const board = document.querySelector(".board");
+
+  if (orientation === "horizontal") {
+    for (let i = 0; i < length; i++) {
+      const tile = board.querySelector(`#tile-${y}-${x+i}`);
+      tile.classList.add("filled-tile");
+    }
+  } else {
+    for (let i = 0; i < length; i++) {
+      const tile = board.querySelector(`#tile-${y+i}-${x}`);
+      tile.classList.add("filled-tile");
+    }
+  }
 }
 
 export { generatePlacementScreen };
