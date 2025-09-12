@@ -1,9 +1,15 @@
+import { generateBattleScreen } from "./battle-screen.js";
 import { Player, Gameboard } from "./battleship-data.js";
+import { clearPage } from "./main.js";
+import { renderPlayerBoard } from "./page-elements.js";
 import { generatePlacementScreen } from "./placement-screen.js";
 
+let humanPlayer;
+let cpuPlayer;
+
 function setupGame() {
-  const humanPlayer = new Player("human");
-  const cpuPlayer = new Player("cpu");
+  humanPlayer = new Player("human");
+  cpuPlayer = new Player("cpu");
 
   populateCpuBoard(cpuPlayer);
 
@@ -45,6 +51,12 @@ function generateOrientation() { // generate random orientation
   return orientation;
 }
 
+function startBattlePhase() {
+  clearPage();
+  const { playerGrid } = generateBattleScreen();
+  renderPlayerBoard(humanPlayer, playerGrid);
+}
+
 function takeTurn(player, opponent) {
   if (player.type === "cpu") {
     if (player.compAttack(opponent.board)) {
@@ -58,6 +70,7 @@ function takeTurn(player, opponent) {
 }
 
 function gameLoop(p1, p2) {
+  // IMPLEMENT RANDOMIZER for tunrs (eg. choose a dice) etc
   let turnOrder = 0;
   let endGame = false;
   do {
@@ -83,4 +96,4 @@ function gameLoop(p1, p2) {
 
 // gameLoop(trialP1, trialP2);
 
-export { handleHumanShipPlacement, setupGame };
+export { handleHumanShipPlacement, setupGame, startBattlePhase };

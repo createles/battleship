@@ -1,7 +1,5 @@
 import { createTiles, fillPieces } from "./page-elements.js";
-import { handleHumanShipPlacement } from "./battleship-game-controller.js";
-import { generateBattleScreen } from "./battle-screen.js";
-import { clearPage } from "./main.js";
+import { handleHumanShipPlacement, startBattlePhase } from "./battleship-game-controller.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 
@@ -25,8 +23,7 @@ function generatePlacementScreen(player) {
   confirmBtn.id = "confirm-btn";
   confirmBtn.textContent = "confirm";
   confirmBtn.addEventListener("click", () => {
-    clearPage();
-    generateBattleScreen();
+    startBattlePhase();
   });
 
   placementContainer.append(board, shipMenu);
@@ -122,10 +119,11 @@ function makeDraggable(player) {
           );
 
           if (placementSuccessful) { // on success, populate gameboard AND place ship visual on DOM board
+            const DOMboard = document.querySelector(".board")
             console.log(`Placement successful.`);
             console.log(player.board);
             elementBelow.append(draggable);
-            fillPieces(x, y, length, orientation);
+            fillPieces(DOMboard, x, y, length, orientation);
             draggable.removeEventListener("mousedown", onMouseDown);
             draggable.removeEventListener("click", handleRotation);
           } else { // on fail (tile already occupied), return piece to menu
