@@ -9,16 +9,18 @@ function generateBattleScreen() {
 
   const playerGrid = document.createElement("div");
   playerGrid.id = "playerGrid";
-  playerGrid.classList.add("gameboard")
+  playerGrid.classList.add("board")
   createTiles(playerGrid);
 
   const cpuGrid = document.createElement("div");
   cpuGrid.id = "cpuGrid";
-  cpuGrid.classList.add("gameboard")
+  cpuGrid.classList.add("board")
   createTiles(cpuGrid);
 
   gridsContainer.append(playerGrid, cpuGrid);
   mainContainer.append(gridsContainer);
+
+  return { playerGrid };
 }
 
 // FIGURE OUT TILE DISPLAYING ON BATTLE SCREEN
