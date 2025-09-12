@@ -16,8 +16,8 @@ function createTiles(playerBoard) {
   }
 }
 
-function fillPieces(x, y, length, orientation) {
-  const board = document.querySelector(".board");
+function fillPieces(DOMboard, x, y, length, orientation) {
+  const board = DOMboard;
 
   if (orientation === "horizontal") {
     for (let i = 0; i < length; i++) {
@@ -32,4 +32,19 @@ function fillPieces(x, y, length, orientation) {
   }
 }
 
-export { createTiles, fillPieces }
+function renderPlayerBoard(player, domBoard) {
+  const dataBoard = player.board.shipGrid;
+
+  dataBoard.forEach((row, y) => {
+    row.forEach((tile, x) => {
+      if (tile !== null) {
+        const domTile = domBoard.querySelector(`#tile-${y}-${x}`);
+        if (player.type === "human" && domTile) {
+          domTile.classList.add("filled-tile");
+        }
+      }
+    });
+  });
+}
+
+export { createTiles, fillPieces, renderPlayerBoard }
