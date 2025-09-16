@@ -20,7 +20,7 @@ function generateBattleScreen() {
   gridsContainer.append(playerGrid, cpuGrid);
   mainContainer.append(gridsContainer);
 
-  return { playerGrid };
+  return;
 }
 
 // FIGURE OUT TILE DISPLAYING ON BATTLE SCREEN
