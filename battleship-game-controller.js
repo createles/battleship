@@ -4,8 +4,7 @@ import { clearPage } from "./main.js";
 import { renderPlayerBoard } from "./page-elements.js";
 import { generatePlacementScreen } from "./placement-screen.js";
 
-let humanPlayer;
-let cpuPlayer;
+let humanPlayer, cpuPlayer, playerGrid, cpuGrid;
 
 function setupGame() {
   humanPlayer = new Player("human");
@@ -53,47 +52,72 @@ function generateOrientation() { // generate random orientation
 
 function startBattlePhase() {
   clearPage();
-  const { playerGrid } = generateBattleScreen();
+  generateBattleScreen();
+  playerGrid = document.querySelector("#playerGrid") 
+  cpuGrid = document.querySelector("#cpuGrid")
   renderPlayerBoard(humanPlayer, playerGrid);
+
+  preparePlayerTurn();
 }
 
-function takeTurn(player, opponent) {
-  if (player.type === "cpu") {
-    if (player.compAttack(opponent.board)) {
-      console.log("Fire!");
-    } else {
-      console.log("Did not fire.");
-    }
-  } /* else {
-
-  } */
+function preparePlayerTurn() {
+  console.log("Your turn to attack!");
+  cpuGrid.addEventListener("click", handlePlayerAttack);
+  // cpuGrid.classList.add("active-turn");
 }
 
-function gameLoop(p1, p2) {
-  // IMPLEMENT RANDOMIZER for tunrs (eg. choose a dice) etc
-  let turnOrder = 0;
-  let endGame = false;
-  do {
-    if (turnOrder === 0) {
-      takeTurn(p1, p2);
-      endGame = p2.board.areAllShipsSunk();
-      turnOrder++;
+function handlePlayerAttack(event) {
+  cpuGrid.classList.remove("active-turn");
+  cpuGrid.removeEventListener("click", handlePlayerAttack);
 
-    } else {
-      takeTurn(p2, p1);
-      endGame = p1.board.areAllShipsSunk();
-      turnOrder--;
-    }
-  } while (endGame === false);
-
-  if (p1.board.areAllShipsSunk()) {
-    console.log('Player 2 wins!');
-  } else {
-    console.log('Player 1 Wins!');
+  const tile = event.target;
+  if (!tile.dataset.x || tile.classList.contains("hit") || tile.classList.contains("miss")) {
+    preparePlayerTurn();
+    return;
   }
-  return;
+
+  const x = parseInt(tile.dataset.x, 10);
+  const y = parseInt(tile.dataset.y, 10);
+  const pos = { y, x };
+
+  console.log(`Fired at {${y}, ${x}}...`);
+
+  const result = cpuPlayer.board.receiveAttack(pos);
+
+  result ? console.log("It's a hit!") : console.log("Player missed.");
+  tile.classList.add(result ? "hit" : "miss");
+
+  if (cpuPlayer.board.areAllShipsSunk()) {
+    endGame("Player");
+    return;
+  }
+
+  console.log("CPU player's turn.")
+  setTimeout(handleComputerTurn, 1000);
 }
 
-// gameLoop(trialP1, trialP2);
+function handleComputerTurn() {
+  const attackData = cpuPlayer.compAttack(humanPlayer.board);
+
+  if (attackData) {
+    const { result, position } = attackData; // Destructure return object for simpler access
+    console.log(`Fired at {${position.y}, ${position.x}}...`);
+    const tile = playerGrid.querySelector(`#tile-${position.y}-${position.x}`);
+    tile.classList.add(result ? "hit" : "miss");
+
+    result ? console.log("It's a hit!") : console.log("CPU missed.");
+
+    if (humanPlayer.board.areAllShipsSunk()) {
+      endGame("CPU");
+      return;
+    }
+  }
+
+  preparePlayerTurn();
+}
+
+function endGame(winner) {
+  console.log(`Game over! ${winner} wins!`);
+}
 
 export { handleHumanShipPlacement, setupGame, startBattlePhase };
