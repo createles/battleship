@@ -1,4 +1,4 @@
-import { createTiles } from "../page-elements.js";
+import { createTiles } from "./page-elements.js";
 
 const body = document.querySelector("body");
 const mainContainer = document.querySelector("#mainContainer");
