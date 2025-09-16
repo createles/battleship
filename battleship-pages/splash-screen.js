@@ -1,6 +1,6 @@
 import { generatePlacementScreen } from "./placement-screen.js";
-import { clearPage } from "./main.js";
-import { setupGame } from "./battleship-game-controller.js";
+import { clearPage } from "../main.js";
+import { setupGame } from "../battleship-game-controller.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 

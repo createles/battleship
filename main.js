@@ -1,4 +1,4 @@
-import { generateSplash } from "./splash-screen.js";
+import { generateSplash } from "./battleship-pages/splash-screen.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 

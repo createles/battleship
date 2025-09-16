@@ -1,5 +1,5 @@
-import { createTiles, fillPieces } from "./page-elements.js";
-import { handleHumanShipPlacement, startBattlePhase } from "./battleship-game-controller.js";
+import { createTiles, fillPieces } from "../page-elements.js";
+import { handleHumanShipPlacement, startBattlePhase } from "../battleship-game-controller.js";
 
 const mainContainer = document.querySelector("#mainContainer");
 

@@ -1,8 +1,8 @@
-import { generateBattleScreen } from "./battle-screen.js";
+import { generateBattleScreen } from "./battleship-pages/battle-screen.js";
 import { Player, Gameboard } from "./battleship-data.js";
 import { clearPage } from "./main.js";
 import { renderPlayerBoard } from "./page-elements.js";
-import { generatePlacementScreen } from "./placement-screen.js";
+import { generatePlacementScreen } from "./battleship-pages/placement-screen.js";
 
 let humanPlayer, cpuPlayer, playerGrid, cpuGrid;
 
