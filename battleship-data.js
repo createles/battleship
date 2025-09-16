@@ -149,7 +149,12 @@ class Player {
       const randomIndex = Math.floor(Math.random() * movesList.length);
       const chosenPos = movesList[randomIndex];
 
-      return (opponentBoard.receiveAttack(chosenPos));
+      const atkResult = opponentBoard.receiveAttack(chosenPos)
+
+      return {
+        result: atkResult,
+        position: chosenPos,
+      };
 
     } else {
       return false; // no moves to be made
