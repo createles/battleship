@@ -105,18 +105,18 @@ class Gameboard {
 
   receiveAttack(pos) {
     // records and updates attack result
-    const target = this.shipGrid[pos.x][pos.y];
-    if (this.attackGrid[pos.x][pos.y] !== null) return false; // position already attacked (either a 'hit!' or 'miss!' element at index)
+    const target = this.shipGrid[pos.y][pos.x];
+    if (this.attackGrid[pos.y][pos.x] !== null) return false; // position already attacked (either a 'hit!' or 'miss!' element at index)
 
     if (target !== null) {
       // if position is occupied
       target.hit(); // update ship health
       target.isSunken(); // check and update sunken status
-      this.attackGrid[pos.x][pos.y] = "hit!"; // record hit on position
+      this.attackGrid[pos.y][pos.x] = "hit!"; // record hit on position
       return true;
     } else if (target === null) {
       // if empty position
-      this.attackGrid[pos.x][pos.y] = "miss!"; // record miss on position
+      this.attackGrid[pos.y][pos.x] = "miss!"; // record miss on position
       return false;
     }
   }
@@ -162,7 +162,7 @@ class Player {
       for (let j = 0; j < 10; j++) {
         const tile = opponentBoard.attackGrid[i][j];
         if (tile === null) {
-          availableMoves.push({ x: i, y: j });
+          availableMoves.push({ x: j, y: i });
         }
       }
     }
