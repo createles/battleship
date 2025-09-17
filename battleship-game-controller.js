@@ -1,7 +1,7 @@
 import { generateBattleScreen } from "./battleship-pages/battle-screen.js";
 import { Player, Gameboard } from "./battleship-data.js";
 import { clearPage } from "./main.js";
-import { renderPlayerBoard } from "./battleship-pages/page-elements.js";
+import { displayWinner, renderPlayerBoard } from "./battleship-pages/page-elements.js";
 import { generatePlacementScreen } from "./battleship-pages/placement-screen.js";
 
 let humanPlayer, cpuPlayer, playerGrid, cpuGrid;
@@ -118,6 +118,7 @@ function handleComputerTurn() {
 
 function endGame(winner) {
   console.log(`Game over! ${winner} wins!`);
+  displayWinner(winner);
 }
 
 export { handleHumanShipPlacement, setupGame, startBattlePhase };

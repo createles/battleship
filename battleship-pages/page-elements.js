@@ -47,4 +47,17 @@ function renderPlayerBoard(player, domBoard) {
   });
 }
 
-export { createTiles, fillPieces, renderPlayerBoard }
+function displayWinner(winner) {
+  const mainContainer = document.querySelector("#mainContainer");
+  const winPop = document.createElement("div");
+  winPop.id = "winPop";
+
+  const winMsg = document.createElement("div");
+  winMsg.id = "winMsg";
+  winMsg.textContent = `${winner} wins!`;
+
+  winPop.append(winMsg);
+  mainContainer.append(winPop);
+}
+
+export { createTiles, fillPieces, renderPlayerBoard, displayWinner }

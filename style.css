@@ -104,3 +104,26 @@
 .miss {
   background-color: purple;
 }
+
+#winPop {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.315);
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#winMsg {
+  height: 30%;
+  width: 40%;
+  background-color: goldenrod;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
