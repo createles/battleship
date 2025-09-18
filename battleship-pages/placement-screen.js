@@ -2,6 +2,7 @@ import { createTiles, fillPieces } from "./page-elements.js";
 import { handleHumanShipPlacement, startBattlePhase } from "../battleship-game-controller.js";
 
 const mainContainer = document.querySelector("#mainContainer");
+let currentPiece;
 
 // populates the page with the ship placement screen
 function generatePlacementScreen(player) {
@@ -64,8 +65,10 @@ function makeDraggable(player) {
     let offsetX, offsetY; // used to identify where on the element it was clicked
     const originalParent = draggable.parentElement;
     let isDragging = false; // indicates if movement is detected
+    let lastHoveredTile = null;
 
     function onMouseDown(e) {
+      currentPiece = draggable; // set piece as current piece when held
       offsetX = e.clientX - draggable.getBoundingClientRect().left; // e.client x & y identify the position of the mouse
       offsetY = e.clientY - draggable.getBoundingClientRect().top; // relative to the viewport, used to smooth out movement
 
@@ -86,10 +89,30 @@ function makeDraggable(player) {
       const newY = e.clientY - offsetY; // to create dragging effect,
       draggable.style.left = `${newX}px`; // offset maintains spacing between mouse and element corner
       draggable.style.top = `${newY}px`;
+
+      currentPiece.style.pointerEvents = "none";
+      const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+      currentPiece.style.pointerEvents = "auto";
+
+      let currentTile = null;
+      if (elementBelow && elementBelow.classList.contains("tile")) {
+        currentTile = elementBelow;
+      }
+
+      if (currentTile !== lastHoveredTile) {
+        if (currentTile) {
+          previewPlacement(currentTile, player);
+        } else {
+          clearPreviews();
+        }
+
+        lastHoveredTile = currentTile;
+      }
     }
 
     // drop behavior (placing ship pieces on gameboard)
     function onMouseUp(e) {
+      currentPiece = null; // clear piece when let go
       document.removeEventListener("mousemove", onMouseMove); // remove eventListeners after dropped *IF successful
       document.removeEventListener("mouseup", onMouseUp);
 
@@ -127,7 +150,7 @@ function makeDraggable(player) {
             draggable.removeEventListener("mousedown", onMouseDown);
             draggable.removeEventListener("click", handleRotation);
           } else { // on fail (tile already occupied), return piece to menu
-            console.log("Invalid placement rule. Returning ship.");
+            console.log("Invalid placement. Returning ship.");
             originalParent.append(draggable);
             draggable.style.position = "static";
             draggable.style.left = "";
@@ -143,6 +166,7 @@ function makeDraggable(player) {
       }
 
       isDragging = false;
+      clearPreviews();
     }
 
     // handles click event to rotate piece orientation
@@ -158,6 +182,39 @@ function makeDraggable(player) {
 
     draggable.addEventListener("click", handleRotation);
     draggable.addEventListener("mousedown", onMouseDown);
+  });
+}
+
+function previewPlacement(tile, player) {
+  console.log("--- Preview Fired ---")
+  if (!currentPiece) return;
+
+  const length = parseInt(currentPiece.dataset.length, 10);
+  const orientation = currentPiece.dataset.orientation;
+  const startX = parseInt(tile.dataset.x, 10);
+  const startY = parseInt(tile.dataset.y, 10);
+
+  const isValid = player.board.placeValidation(length, { x: startX, y: startY}, orientation);
+  const previewClass = isValid? 'preview-valid' : 'preview-invalid';
+
+  for (let i = 0; i < length; i++) {
+    let tile;
+    if (orientation === 'horizontal') {
+      tile = document.querySelector(`#tile-${startY}-${startX + i}`);
+    } else {
+      tile = document.querySelector(`#tile-${startY + i}-${startX}`);
+    }
+
+    if (tile) {
+      tile.classList.add(previewClass);
+    }
+  }
+}
+
+function clearPreviews() {
+  const tiles = document.querySelectorAll("#placementContainer .tile");
+  tiles.forEach(tile => {
+    tile.classList.remove('preview-valid', 'preview-invalid');
   });
 }
 

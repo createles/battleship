@@ -84,6 +84,14 @@
   background-color: red;
 }
 
+.tile.preview-valid {
+  background-color: rgba(46, 204, 113, 0.7);
+}
+
+.tile.preview-invalid {
+  background-color: rgba(231, 76, 60, 0.7);
+}
+
 #gridsContainer {
   height: 100%;
   width: 100%;

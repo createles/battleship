@@ -38,7 +38,7 @@ class Gameboard {
 
   placeShip(length, startPos, orientation) {
     // places ships in .shipGrid array
-    if (this.#placeValidation(length, startPos, orientation)) {
+    if (this.placeValidation(length, startPos, orientation)) {
       // validate placement
       const newShip = new Ship(length); // create ship object with length
       this.ships.push(newShip);
@@ -60,7 +60,7 @@ class Gameboard {
     }
   }
 
-  #placeValidation(length, startPos, orientation) {
+  placeValidation(length, startPos, orientation) {
     // fail-first approach (helpful for validation)
     const xPos = startPos.x;
     const yPos = startPos.y;
