@@ -101,6 +101,7 @@ function makeDraggable(player) {
 
       if (currentTile !== lastHoveredTile) {
         if (currentTile) {
+          clearPreviews();
           previewPlacement(currentTile, player);
         } else {
           clearPreviews();
