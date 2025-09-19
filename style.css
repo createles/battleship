@@ -55,6 +55,41 @@
   height: 90%;
   width: 85%;
   background-color: rgba(220, 20, 60, 0.747);
+  display: grid;
+  grid-template: 1fr 1fr 1fr 1fr 1fr / 1fr;
+}
+
+.shipSelect {
+  display: flex;
+  flex-direction: column;
+}
+
+.ship-frame {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template: 1fr / 1fr 1fr;
+}
+
+.h-piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.v-piece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.ship-part {
+  width: 20%;
+  height: 20%;
+  background-color: greenyellow;
 }
 
 .board {

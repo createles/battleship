@@ -47,12 +47,36 @@ function createPieces() {
 
   for (const ship of ships) {
     const shipSelect = document.createElement("div");
+    const shipFrame = document.createElement("div");
+    shipFrame.classList.add("ship-frame");
+
+    const hPiece = document.createElement("div");
+    hPiece.classList.add("h-piece");
+    const vPiece = document.createElement("div");
+    vPiece.classList.add("v-piece");
+
+    function buildShip(piece) {
+      for (let i = 0; i < ship.length; i++) {
+        const part = document.createElement("div");
+        part.classList.add("ship-part");
+        piece.append(part);
+      }
+    }
+
+    buildShip(hPiece);
+    buildShip(vPiece);
+
+    const shipName = document.createElement("div");
+    shipName.classList.add("ship-name");
+    shipName.textContent = ship.type;
+
     shipSelect.classList.add("shipSelect");
-    shipSelect.textContent = `${ship.type}`;
     shipSelect.dataset.length = ship.length;
     shipSelect.dataset.orientation = "horizontal";
     shipSelect.id = `${ship.type}`;
 
+    shipFrame.append(hPiece, vPiece);
+    shipSelect.append(shipFrame, shipName);
     shipMenu.append(shipSelect);
   }
 }
