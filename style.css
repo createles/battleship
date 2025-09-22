@@ -66,12 +66,19 @@
 
 .ship-frame {
   height: 100%;
-  width: 100%;
-  display: grid;
-  grid-template: 1fr / 1fr 1fr;
+  /* aspect-ratio: 1 / 1; */
+  display: flex;
+}
+
+.ship-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .h-piece {
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,11 +86,35 @@
 }
 
 .v-piece {
-  display: flex;
+  height: 100%;
+  width: 100%;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1px;
+}
+
+.ghost-ship {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+.shipSelect.is-dragging-source {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.shipSelect.vertical .v-piece {
+  display: flex;
+}
+
+.shipSelect.vertical .h-piece {
+  display: none;
 }
 
 .ship-part {

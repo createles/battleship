@@ -3,6 +3,7 @@ import { handleHumanShipPlacement, startBattlePhase } from "../battleship-game-c
 
 const mainContainer = document.querySelector("#mainContainer");
 let currentPiece;
+let placed = null;
 
 // populates the page with the ship placement screen
 function generatePlacementScreen(player) {
@@ -24,7 +25,7 @@ function generatePlacementScreen(player) {
   confirmBtn.id = "confirm-btn";
   confirmBtn.textContent = "confirm";
   confirmBtn.addEventListener("click", () => {
-    startBattlePhase();
+    if (placed === 5) startBattlePhase();
   });
 
   placementContainer.append(board, shipMenu);
@@ -90,6 +91,7 @@ function makeDraggable(player) {
     const originalParent = draggable.parentElement;
     let isDragging = false; // indicates if movement is detected
     let lastHoveredTile = null;
+    let ghostShip = null;
 
     function onMouseDown(e) {
       currentPiece = draggable; // set piece as current piece when held
@@ -104,15 +106,25 @@ function makeDraggable(player) {
       // handles smooth moving of element in the DOM, updates position dynamically
       if (!isDragging) {
         isDragging = true; // switches to true when moving
-        draggable.style.position = "absolute"; // set element to absolute to enable 'left' 'top' position mod
-        draggable.style.zIndex = 1000; // bring element to the front of the DOM
-        draggable.style.cursor = "grabbing"; // show grabby hands
+        let pieceToClone;
+
+        if (draggable.dataset.orientation === "horizontal") {
+          pieceToClone = draggable.querySelector(".h-piece");
+        } else {
+          pieceToClone = draggable.querySelector(".v-piece");
+        }
+
+        ghostShip = pieceToClone.cloneNode(true);
+        ghostShip.classList.add('ghost-ship');
+        document.body.append(ghostShip);
+
+        draggable.classList.add("is-dragging-source");
       }
 
       const newX = e.clientX - offsetX; // update top an left style (position)
       const newY = e.clientY - offsetY; // to create dragging effect,
-      draggable.style.left = `${newX}px`; // offset maintains spacing between mouse and element corner
-      draggable.style.top = `${newY}px`;
+      ghostShip.style.left = `${newX}px`; // offset maintains spacing between mouse and element corner
+      ghostShip.style.top = `${newY}px`;
 
       currentPiece.style.pointerEvents = "none";
       const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
@@ -140,6 +152,13 @@ function makeDraggable(player) {
       currentPiece = null; // clear piece when let go
       document.removeEventListener("mousemove", onMouseMove); // remove eventListeners after dropped *IF successful
       document.removeEventListener("mouseup", onMouseUp);
+
+      if (ghostShip) {
+        ghostShip.remove();
+        ghostShip = null;
+      }
+
+      draggable.classList.remove("is-dragging-source");
 
       // only runs drop logic if element was dragged initially
       if (isDragging) {
@@ -170,20 +189,19 @@ function makeDraggable(player) {
             const DOMboard = document.querySelector(".board")
             console.log(`Placement successful.`);
             console.log(player.board);
-            elementBelow.append(draggable);
             fillPieces(DOMboard, x, y, length, orientation);
+            draggable.style.opacity = "0.4";
             draggable.removeEventListener("mousedown", onMouseDown);
             draggable.removeEventListener("click", handleRotation);
+            placed++;
           } else { // on fail (tile already occupied), return piece to menu
             console.log("Invalid placement. Returning ship.");
-            originalParent.append(draggable);
             draggable.style.position = "static";
             draggable.style.left = "";
             draggable.style.top = "";
           }
         } else {
           console.log("Invalid drop location. Returning ship.");
-          originalParent.append(draggable);
           draggable.style.position = "static"; // Or relative, depending on your CSS
           draggable.style.left = "";
           draggable.style.top = "";
@@ -198,11 +216,11 @@ function makeDraggable(player) {
     function handleRotation(e) {
       if (draggable.dataset.orientation === "horizontal") {
         draggable.dataset.orientation = "vertical";
-        draggable.classList.add("vertical");
       } else {
         draggable.dataset.orientation = "horizontal";
-        draggable.classList.remove("vertical");
       }
+
+      draggable.classList.toggle("vertical");
     }
 
     draggable.addEventListener("click", handleRotation);
