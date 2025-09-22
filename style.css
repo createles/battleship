@@ -1,203 +1,307 @@
+/* --- Root Variables (Single Source of Truth) --- */
+:root {
+  --background-color: #1a2a33; /* Deep sea blue */
+  --accent-color-1: #31c3bd; /* Teal */
+  --accent-color-2: #f2b137; /* Yellow */
+  --light-color: #dbe8ed;   /* Light grey/blue */
+  --dark-color: #1f3641;    /* Darker blue */
+  --danger-color: #e85a4f;  /* Muted red for invalid moves */
+
+  font-family: 'Roboto', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- General Body and Layout --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* body {
-
-} */
+body {
+  background-color: var(--background-color);
+  color: var(--light-color);
+  overflow: hidden; /* Prevent scrollbars */
+}
 
 #mainContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  gap: 1.5rem;
 }
 
+/* --- Splash Screen --- */
 #titleBox {
-  height: 60%;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.507);
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 3rem;
+  background-color: var(--dark-color);
+  padding: 3rem 4rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 0 #10212a;
 }
 
 #titleCard {
-  font-size: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 5rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-color-1);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 #startGame {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background-color: var(--accent-color-2);
+  color: var(--dark-color);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #c88f2e;
+  transition: all 0.1s ease;
 }
 
 #startGame:hover {
-  cursor: pointer;
+  background-color: #ffc860;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #c88f2e;
 }
 
+/* --- Placement Screen --- */
 #placementContainer {
-  height: 80%;
-  width: 70%;
-  --container-width: 70vw;
-  --container-height: 80vh;
-  background-color: rgba(0, 0, 0, 0.507);
-  display: grid;
-  grid-template: 1fr / 3fr 1fr;
-  place-items: center;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    align-items: center;
+}
+
+#instructions {
+    font-size: 1.2rem;
+    color: var(--light-color);
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
 #shipMenu {
-  height: 90%;
-  width: 85%;
-  background-color: rgba(220, 20, 60, 0.747);
-  display: grid;
-  grid-template: 1fr 1fr 1fr 1fr 1fr / 1fr;
+  height: 100%;
+    background-color: var(--dark-color);
+    padding: 1rem;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1rem;
+    align-self: center; /* CONT FRM HERE */
 }
 
 .shipSelect {
-  display: flex;
-  flex-direction: column;
+    background-color: var(--background-color);
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: move;
+    transition: background-color 0.2s, opacity 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.shipSelect:hover {
+    background-color: #2c4858;
 }
 
 .ship-frame {
-  height: 100%;
-  /* aspect-ratio: 1 / 1; */
-  display: flex;
+display: grid;
+grid-template: 1fr / 1fr 1fr;
+    width: 100%;
+    gap: 5px;
 }
 
-.ship-name {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.h-piece, .v-piece {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    align-items: center;
 }
-
-.h-piece {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-}
-
 .v-piece {
-  height: 100%;
-  width: 100%;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
+    flex-direction: column;
 }
-
-.ghost-ship {
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: 2000;
-}
-
-.shipSelect.is-dragging-source {
-  opacity: 0.4;
-  cursor: grabbing;
-}
-
-.shipSelect.vertical .v-piece {
-  display: flex;
-}
-
-.shipSelect.vertical .h-piece {
-  display: none;
-}
-
 .ship-part {
-  width: 20%;
-  height: 20%;
-  background-color: greenyellow;
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-color-1);
+    border-radius: 2px;
+}
+
+.shipSelect .v-piece { opacity: 0.4; }
+.shipSelect.vertical .h-piece { opacity: 0.4; }
+.shipSelect.vertical .v-piece { opacity: 1; }
+
+
+/* --- Game Boards and Tiles --- */
+#gridsContainer {
+  display: flex;
+  flex-wrap: wrap; /* Allows grids to stack on small screens */
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.board-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .board {
-  --square-size: calc(min(var(--container-height),var(--container-width)) - 50px);
-  width: var(--square-size);
-  height: var(--square-size);
-  background-color: rgb(0, 0, 0);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  background-color: var(--dark-color);
+  padding: 1rem;
+  border-radius: 10px;
   aspect-ratio: 1 / 1;
-  gap: 5px;
-}
-
-.row-container {
-  height: 10%;
-  display: flex;
-  gap: 5px;
+  width: 100%;
+  max-width: 450px;
 }
 
 .tile {
-  height: 100%;
-  width: 10%;
-  background-color: rgb(148, 207, 207);
+  background-color: var(--background-color);
+  border-radius: 3px;
+  aspect-ratio: 1 / 1;
+  transition: background-color 0.1s linear;
+  position: relative;
 }
 
-.filled-tile {
-  background-color: red;
+#cpuGrid.active-turn .tile:not(.hit):not(.miss):hover {
+  background-color: var(--accent-color-1);
+  cursor: pointer;
+}
+
+.tile.filled-tile {
+  background-color: var(--light-color);
+  opacity: 0.7;
+}
+
+.tile.hit::after,
+.tile.miss::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.tile.hit::after {
+  width: 50%;
+  height: 50%;
+  background-color: var(--danger-color);
+}
+
+.tile.miss::after {
+  width: 25%;
+  height: 25%;
+  background-color: var(--light-color);
 }
 
 .tile.preview-valid {
-  background-color: rgba(46, 204, 113, 0.7);
+    background-color: rgba(46, 204, 113, 0.7);
 }
 
 .tile.preview-invalid {
-  background-color: rgba(231, 76, 60, 0.7);
+    background-color: rgba(231, 76, 60, 0.7);
 }
 
-#gridsContainer {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+
+/* --- Drag & Drop Visuals --- */
+.ghost-ship {
+    display: flex;
+    gap: 3px;
+    position: absolute;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 2000;
 }
 
-#playerGrid, #cpuGrid {
-  height: 80%;
+.ghost-ship.v-piece {
+    flex-direction: column;
 }
 
-.hit {
-  background-color: rgb(0, 223, 0);
+.shipSelect.is-dragging-source {
+    opacity: 0.3;
+    cursor: grabbing;
 }
 
-.miss {
-  background-color: purple;
-}
 
+/* --- Win Message & Status Bar --- */
 #winPop {
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.315);
   position: fixed;
-  z-index: 1000;
   top: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 #winMsg {
-  height: 30%;
-  width: 40%;
-  background-color: goldenrod;
-  color: white;
+  background-color: var(--dark-color);
+  padding: 2rem 4rem;
+  border-radius: 15px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-color-2);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
+  text-align: center;
+}
+
+#againBtn, #confirm-btn {
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#againBtn:hover, #confirm-btn:hover {
+    background-color: #ffffff;
+}
+
+#statusBar {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--light-color);
+  padding: 0.5rem 1rem;
+  min-height: 2.5rem;
+  /* Reserve space to prevent layout shift */
+  text-align: center;
 }

@@ -12,7 +12,9 @@ function generatePlacementScreen(player) {
 
   const instructions = document.createElement("div");
   instructions.id = "instructions";
-  instructions.textContent = "instructions to follow";
+  const text = document.createElement("div");
+  text.id = "insText";
+  text.textContent = "Place your ship pieces on the board. Click on a piece before dragging to rotate."
 
   const board = document.createElement("div");
   board.classList.add("board");
@@ -28,6 +30,7 @@ function generatePlacementScreen(player) {
     if (placed === 5) startBattlePhase();
   });
 
+  instructions.append(text);
   placementContainer.append(board, shipMenu);
   mainContainer.append(instructions, placementContainer, confirmBtn);
 
