@@ -3,7 +3,7 @@ import { handleHumanShipPlacement, startBattlePhase } from "../battleship-game-c
 
 const mainContainer = document.querySelector("#mainContainer");
 let currentPiece;
-let placed = null;
+let placed = 0;
 
 // populates the page with the ship placement screen
 function generatePlacementScreen(player) {
@@ -27,7 +27,11 @@ function generatePlacementScreen(player) {
   confirmBtn.id = "confirm-btn";
   confirmBtn.textContent = "confirm";
   confirmBtn.addEventListener("click", () => {
-    if (placed === 5) startBattlePhase();
+    if (placed === 5) {
+      startBattlePhase();
+    } else {
+      showPlacementWarning();
+    }
   });
 
   instructions.append(text);
@@ -36,6 +40,30 @@ function generatePlacementScreen(player) {
 
   createPieces(); // generate pieces for ship menu
   makeDraggable(player); // allow pieces to be draggable
+}
+
+function showPlacementWarning() {
+  const warningPop = document.createElement("div");
+  warningPop.id = "warningPop";
+
+  const warningMsg = document.createElement("div");
+  warningMsg.id = "warningMsg";
+
+  const msgText = document.createElement("p");
+  msgText.textContent = "Please place all 5 ships before proceeding.";
+
+  const okBtn = document.createElement("button");
+  okBtn.textContent = "OK";
+  okBtn.id = "againBtn"; // We can reuse the existing button style
+
+  // When the "OK" button is clicked, remove the pop-up
+  okBtn.addEventListener("click", () => {
+    warningPop.remove();
+  });
+
+  warningMsg.append(msgText, okBtn);
+  warningPop.append(warningMsg);
+  document.body.append(warningPop);
 }
 
 // creates the ship piece DOM elements
