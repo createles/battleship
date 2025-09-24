@@ -101,7 +101,7 @@ body {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
     gap: 1rem;
-    align-self: center; /* CONT FRM HERE */
+    align-self: stretch; 
 }
 
 .shipSelect {
@@ -304,4 +304,45 @@ grid-template: 1fr / 1fr 1fr;
   min-height: 2.5rem;
   /* Reserve space to prevent layout shift */
   text-align: center;
+}
+
+@media (max-height: 800px) {
+
+  #mainContainer {
+    gap: 0.5rem;
+  }
+
+  #placementContainer {
+    gap: 1rem;
+    max-width: 800px;
+  }
+
+  .board {
+    max-width: 400px;
+    padding: 0.5rem;
+  }
+
+  #instructions {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #shipMenu {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .ship-part {
+    width: 8px;
+    height: 8px;
+  }
+
+  .h-piece, .v-piece {
+    gap: 2px;
+  }
+
+  .shipSelect {
+    gap: 0.4rem;
+    padding: 0.4rem;
+  }
 }
