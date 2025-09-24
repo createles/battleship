@@ -93,7 +93,7 @@ function handlePlayerAttack(event) {
   }
 
   console.log("CPU player's turn.")
-  setTimeout(handleComputerTurn, 1000);
+  setTimeout(handleComputerTurn, 500);
 }
 
 function handleComputerTurn() {
